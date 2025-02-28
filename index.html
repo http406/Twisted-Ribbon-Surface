@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twisted Ribbon Surface</title>
+    <style>
+        body { 
+        margin: 0; 
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        }
+        canvas { display: block; }
+        #infoButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .info-popup {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            width: 300px;
+            text-align: left;
+            user-select: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <button id="infoButton">&#9432;</button>
+    <div class="info-popup" id="infoPopup">
+        <p style="text-align:center;" ><strong>Twisted Ribbon Surface</strong></p>
+    <p style="color:pink; text-align: center;">The Twisted Ribbon Surface is a mathematically defined surface that combines sinusoidal and circular functions to create a twisting, ribbon-like shape. The parametric equations control the shape, size, and twisting behavior of the ribbon, and the Three.js code visualizes and animates this surface in a 3D environment.</p>
+            <p style="text-align:center;">For Equations visit my Github. Enjoy!</p>
+    </div>
+    <script>
+        let scene, camera, renderer, ribbon, stars;
+
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(95, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 10;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000); // Black background
+            document.body.appendChild(renderer.domElement);
+
+            // Twisted Ribbon Geometry
+            const ribbonGeometry = new THREE.ParametricGeometry((u, v, target) => {
+                u *= Math.PI * 2;
+                v *= Math.PI * 2;
+                const x = 4 * Math.sin(u) * Math.cos(v);
+                const y = 4 * Math.sin(u) * Math.sin(2 * v);
+                const z = 2 * Math.cos(v);
+                target.set(x, y, z);
+            }, 100, 100);
+
+            // Assign colors based on vertex positions
+            const colors = [];
+            const positionAttribute = ribbonGeometry.attributes.position;
+            for (let i = 0; i < positionAttribute.count; i++) {
+                const x = positionAttribute.getX(i);
+                const y = positionAttribute.getY(i);
+                const z = positionAttribute.getZ(i);
+                colors.push((x + 4) / 8, (y + 4) / 8, (z + 2) / 4); // RGB values normalized
+            }
+
+            ribbonGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            // Material with wireframe and colors
+            const ribbonMaterial = new THREE.MeshBasicMaterial({ 
+                vertexColors: true, 
+                wireframe: true 
+            });
+
+            // Mesh
+            ribbon = new THREE.Mesh(ribbonGeometry, ribbonMaterial);
+            scene.add(ribbon);
+
+            // Create stars
+            createStars();
+
+            // Window resize handling
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function createStars() {
+            const starCount = 500;
+            const starGeometry = new THREE.BufferGeometry();
+            const starPositions = [];
+            const starColors = [];
+
+            for (let i = 0; i < starCount; i++) {
+                const x = (Math.random() - 0.5) * 100;
+                const y = (Math.random() - 0.5) * 100;
+                const z = (Math.random() - 0.5) * 100;
+                starPositions.push(x, y, z);
+
+                // Random star color
+                const r = Math.random();
+                const g = Math.random();
+                const b = Math.random();
+                starColors.push(r, g, b);
+            }
+
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+            starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+
+            const starMaterial = new THREE.PointsMaterial({ 
+                size: 0.12, 
+                vertexColors: true, 
+                transparent: true, 
+                opacity: 1 
+            });
+
+            stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animateStars() {
+            const positions = stars.geometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i + 2] += Math.random() * 0.1 - 0.05; // Twinkling effect
+            }
+            stars.geometry.attributes.position.needsUpdate = true;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate the twisted ribbon
+            ribbon.rotation.x += 0.01;
+            ribbon.rotation.y += 0.01;
+
+            // Twinkling stars effect
+            animateStars();
+
+            renderer.render(scene, camera);
+        }
+        
+        $("#infoButton").click(function() {
+            $("#infoPopup").fadeToggle();
+        });
+    </script>
+    <a href="https://github.com/http406/Hypocycloid-Torus/" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+</body>
+  </html>
+    
