@@ -8,7 +8,6 @@ Here’s a clear explanation of each part of the equations that I used in the co
 
 ### 1. **Parameters \( u \) and \( v \):**
 - \( u \) and \( v \) are the parameters that define the surface.
-- Typically, \( u \) and \( v \) range over \( 0 \leq u, v \leq 2\pi \), which ensures the entire surface is generated.
 - \( u \) controls the "width" or "stretch" of the ribbon.
 - \( v \) controls the "twist" or "rotation" of the ribbon.
 
