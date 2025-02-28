@@ -16,38 +16,38 @@ Here’s a clear explanation of each part of the equations that I used in the co
 
 ### 2. **Equation for \( x \):**
 \[
-x = 4 \sin(u) \cos(v)
+x = 4 sin(u) cos(v)
 \]
-- \( \sin(u) \): Creates a sinusoidal variation along the width of the ribbon.
-- \( \cos(v) \): Introduces a circular or rotational effect in the \( x \)-direction.
+- sin(u): Creates a sinusoidal variation along the width of the ribbon.
+- cos(v): Introduces a circular or rotational effect in the \( x \)-direction.
 - The factor \( 4 \) scales the ribbon, making it wider or larger in the \( x \)-direction.
 
 ---
 
 ### 3. **Equation for \( y \):**
 \[
-y = 4 \sin(u) \sin(2v)
+y = 4 sin(u) sin(2v)
 \]
-- \( \sin(u) \): Creates a sinusoidal variation along the width of the ribbon (same as in the \( x \)-equation).
-- \( \sin(2v) \): Introduces a twisting effect by doubling the frequency of the sine wave. This causes the ribbon to twist more sharply.
+- sin(u): Creates a sinusoidal variation along the width of the ribbon (same as in the \( x \)-equation).
+- sin(2v): Introduces a twisting effect by doubling the frequency of the sine wave. This causes the ribbon to twist more sharply.
 - The factor \( 4 \) scales the ribbon, making it wider or larger in the \( y \)-direction.
 
 ---
 
 ### 4. **Equation for \( z \):**
 \[
-z = 2 \cos(v)
+z = 2 cos(v)
 \]
-- \( \cos(v) \): Creates a smooth variation in the \( z \)-direction.
+- cos(v): Creates a smooth variation in the \( z \)-direction.
 - The factor \( 2 \) scales the height or depth of the ribbon, making it taller or shorter.
 
 ---
 
 ### How the Equations Work Together:
-- The combination of \( \sin(u) \) and \( \cos(v) \) or \( \sin(2v) \) creates a surface that twists and curves in 3D space.
+- The combination of sin(u) and cos(v) or sin(2v) creates a surface that twists and curves in 3D space.
 - The factor \( 4 \) in the \( x \) and \( y \) equations scales the ribbon, making it wider or larger.
 - The factor \( 2 \) in the \( z \) equation controls the height or depth of the ribbon.
-- The term \( \sin(2v) \) in the \( y \)-equation is key to creating the **twisting effect** of the ribbon.
+- The term sin(2v) in the \( y \)-equation is key to creating the **twisting effect** of the ribbon.
 
 ---
 
