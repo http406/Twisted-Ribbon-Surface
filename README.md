@@ -81,7 +81,6 @@ This creates the effect of the ribbon twisting and turning in 3D space, making i
 
 ---
 
-### Summary:
 The **Twisted Ribbon Surface** is a mathematically defined surface that combines sinusoidal and circular functions to create a twisting, ribbon-like shape. The parametric equations control the shape, size, and twisting behavior of the ribbon, and the Three.js code visualizes and animates this surface in a 3D environment.
 
 
